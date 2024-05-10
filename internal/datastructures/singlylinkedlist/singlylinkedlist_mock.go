@@ -6,7 +6,9 @@ type MockSinglyLinkedList struct {
 	mock.Mock
 }
 
-func newMockSinglyLinkedList() *MockSinglyLinkedList { return &MockSinglyLinkedList{} }
+func newMockSinglyLinkedList() *MockSinglyLinkedList {
+	return &MockSinglyLinkedList{}
+}
 
 func (m *MockSinglyLinkedList) IsEmpty() bool {
 	args := m.Called()
