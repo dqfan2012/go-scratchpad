@@ -1,4 +1,4 @@
-package singlylinkedlist
+package single
 
 type Node struct {
 	data int
@@ -10,5 +10,8 @@ func NewNode() *Node {
 }
 
 func NewNodeWithData(data int) *Node {
-	return &Node{data: data}
+	return &Node{
+		data: data,
+		next: nil,
+	}
 }
