@@ -40,7 +40,7 @@ func (list *LinkedList) ClearList() {
 }
 
 func (list *LinkedList) DeleteAtPosition(position int) (int, bool) {
-	if list.IsEmpty() || position < 0 || position > list.length {
+	if list.IsEmpty() || position < 0 || position >= list.length {
 		return 0, false
 	}
 
@@ -52,14 +52,13 @@ func (list *LinkedList) DeleteAtPosition(position int) (int, bool) {
 		return value, true
 	}
 
-	itemBeforeRemoval := list.head
+	temp := list.head
 	for i := 0; i < position-1; i++ {
-		itemBeforeRemoval = itemBeforeRemoval.next
+		temp = temp.next
 	}
 
-	itemToRemove := itemBeforeRemoval.next
-	value = itemToRemove.data
-	itemBeforeRemoval.next = itemToRemove.next
+	value = temp.next.data
+	temp.next = temp.next.next
 	list.length--
 
 	return value, true
