@@ -155,8 +155,6 @@ func (list *LinkedList) InsertTail(data int) {
 	newNode := NewNodeWithData(data)
 
 	if list.SetHeadIfEmptyOrInvalidPosition(newNode, 0) {
-		list.head = newNode
-		list.length++
 		return
 	}
 
