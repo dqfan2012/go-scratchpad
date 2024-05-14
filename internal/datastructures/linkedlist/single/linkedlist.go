@@ -38,9 +38,9 @@ func NewLinkedListWithHead(data int) LinkedList {
 	}
 }
 
-// CheckForEmptyListOrInvalidPosition checks to see if the list is clear or the
+// checkForEmptyListOrInvalidPosition checks to see if the list is clear or the
 // position is invalid
-func (list *LinkedList) CheckForEmptyListOrInvalidPosition(position int) bool {
+func (list *LinkedList) checkForEmptyListOrInvalidPosition(position int) bool {
 	return list.IsEmpty() || position < 0 || position >= list.length
 }
 
@@ -52,7 +52,7 @@ func (list *LinkedList) ClearList() {
 
 // DeleteAtPosition deletes the node at the specified position.
 func (list *LinkedList) DeleteAtPosition(position int) (int, bool) {
-	if list.CheckForEmptyListOrInvalidPosition(position) {
+	if list.checkForEmptyListOrInvalidPosition(position) {
 		return 0, false
 	}
 
@@ -186,7 +186,7 @@ func (list *LinkedList) IsValuePresent(data int) bool {
 
 // SetHeadIfEmptyOrInvalidPosition sets the head if the list is empty or position is invalid.
 func (list *LinkedList) SetHeadIfEmptyOrInvalidPosition(node *Node, position int) bool {
-	if list.CheckForEmptyListOrInvalidPosition(position) {
+	if list.checkForEmptyListOrInvalidPosition(position) {
 		list.head = node
 		list.length++
 		return true
