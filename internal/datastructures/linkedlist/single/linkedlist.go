@@ -7,7 +7,7 @@ type List interface {
 	DeleteHead() (int, bool)
 	DeleteTail() (int, bool)
 	IsEmpty() bool
-	IsPresent(int) bool
+	IsValuePresent(int) bool
 	InsertAtPosition(int, int)
 	InsertHead(int)
 	InsertTail(int)
@@ -38,6 +38,12 @@ func NewLinkedListWithHead(data int) LinkedList {
 	}
 }
 
+// CheckForEmptyListOrInvalidPosition checks to see if the list is clear or the
+// position is invalid
+func (list *LinkedList) CheckForEmptyListOrInvalidPosition(position int) bool {
+	return list.IsEmpty() || position < 0 || position >= list.length
+}
+
 // ClearList clears the linked list.
 func (list *LinkedList) ClearList() {
 	list.head = nil
@@ -46,7 +52,7 @@ func (list *LinkedList) ClearList() {
 
 // DeleteAtPosition deletes the node at the specified position.
 func (list *LinkedList) DeleteAtPosition(position int) (int, bool) {
-	if list.IsEmpty() || position < 0 || position >= list.length {
+	if list.CheckForEmptyListOrInvalidPosition(position) {
 		return 0, false
 	}
 
@@ -113,23 +119,6 @@ func (list *LinkedList) IsEmpty() bool {
 	return list.length == 0
 }
 
-// IsValuePresent checks if a value is present in the list.
-func (list *LinkedList) IsValuePresent(data int) bool {
-	if !list.IsEmpty() {
-		temp := list.head
-
-		for temp != nil {
-			if temp.data == data {
-				return true
-			}
-
-			temp = temp.next
-		}
-	}
-
-	return false
-}
-
 // InsertAtPosition inserts a node at the specified position.
 func (list *LinkedList) InsertAtPosition(data int, position int) {
 	newNode := NewNodeWithData(data)
@@ -166,6 +155,8 @@ func (list *LinkedList) InsertTail(data int) {
 	newNode := NewNodeWithData(data)
 
 	if list.SetHeadIfEmptyOrInvalidPosition(newNode, 0) {
+		list.head = newNode
+		list.length++
 		return
 	}
 
@@ -178,9 +169,26 @@ func (list *LinkedList) InsertTail(data int) {
 	list.length++
 }
 
+// IsValuePresent checks if a value is present in the list.
+func (list *LinkedList) IsValuePresent(data int) bool {
+	if !list.IsEmpty() {
+		temp := list.head
+
+		for temp != nil {
+			if temp.data == data {
+				return true
+			}
+
+			temp = temp.next
+		}
+	}
+
+	return false
+}
+
 // SetHeadIfEmptyOrInvalidPosition sets the head if the list is empty or position is invalid.
 func (list *LinkedList) SetHeadIfEmptyOrInvalidPosition(node *Node, position int) bool {
-	if list.IsEmpty() || position < 0 {
+	if list.CheckForEmptyListOrInvalidPosition(position) {
 		list.head = node
 		list.length++
 		return true
