@@ -1,80 +1,113 @@
 package single
 
 import (
-	"reflect"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
 
-func TestEmptyLinkedList(t *testing.T) {
-	LinkedList := NewEmptyLinkedList()
+func TestLinkedListInitialization(t *testing.T) {
+	linkedList := NewEmptyLinkedList()
+	assert.Equal(t, 0, linkedList.length)
+	assert.Nil(t, linkedList.head)
 
-	expectedListLength := 0
-	actualListLength := LinkedList.length
-	actualHead := LinkedList.head
-
-	assert.Equal(t, expectedListLength, actualListLength)
-	assert.True(t, reflect.ValueOf(actualHead).IsNil())
+	linkedListWithHead := NewLinkedListWithHead(10)
+	assert.Equal(t, 1, linkedListWithHead.length)
+	assert.Equal(t, 10, linkedListWithHead.head.data)
 }
 
-func TestNewListWithHead(t *testing.T) {
-	expectedValue := 15
-	LinkedList := NewLinkedListWithHead(expectedValue)
+func TestInsertHead(t *testing.T) {
+	linkedList := NewEmptyLinkedList()
+	linkedList.InsertHead(10)
+	linkedList.InsertHead(20)
 
-	expectedListLength := 1
-	actualListLength := LinkedList.length
-	actualHead := LinkedList.head
-
-	assert.Equal(t, expectedListLength, actualListLength)
-	assert.Equal(t, expectedValue, actualHead.data)
+	assert.Equal(t, 2, linkedList.length)
+	assert.Equal(t, 20, linkedList.head.data)
+	assert.Equal(t, 10, linkedList.head.next.data)
 }
 
-func TestInsertAtBeginning(t *testing.T) {
-	expectedValue := 3
-	linkedList := &LinkedList{}
+func TestInsertTail(t *testing.T) {
+	linkedList := NewEmptyLinkedList()
+	linkedList.InsertTail(10)
+	linkedList.InsertTail(20)
 
-	linkedList.InsertHead(expectedValue)
-
-	assert.Equal(t, expectedValue, linkedList.head.data)
-}
-
-func TestInsertAtEnd(t *testing.T) {
-	value1ToInsert := 3
-	value2ToInsert := 5
-	expectedValue := 7
-	linkedList := &LinkedList{}
-
-	linkedList.InsertHead(value1ToInsert)
-	linkedList.InsertHead(value2ToInsert)
-	linkedList.InsertTail(expectedValue)
-
-	temp := linkedList.head
-	for temp.next != nil {
-		temp = temp.next
-	}
-
-	assert.Equal(t, expectedValue, temp.data)
+	assert.Equal(t, 2, linkedList.length)
+	assert.Equal(t, 10, linkedList.head.data)
+	assert.Equal(t, 20, linkedList.head.next.data)
 }
 
 func TestInsertAtPosition(t *testing.T) {
-	expectedValue := 5
-	position := 3
-	linkedList := &LinkedList{}
+	linkedList := NewEmptyLinkedList()
+	linkedList.InsertHead(10)
+	linkedList.InsertHead(20)
+	linkedList.InsertAtPosition(15, 1)
 
-	linkedList.InsertHead(3)
-	linkedList.InsertHead(6)
-	linkedList.InsertHead(9)
-	linkedList.InsertHead(12)
-	linkedList.InsertHead(1)
-	linkedList.InsertHead(4)
-	linkedList.InsertAtPosition(expectedValue, position)
+	assert.Equal(t, 3, linkedList.length)
+	assert.Equal(t, 20, linkedList.head.data)
+	assert.Equal(t, 15, linkedList.head.next.data)
+	assert.Equal(t, 10, linkedList.head.next.next.data)
+}
 
-	// Get the item inserted at the specific position
-	temp := linkedList.head
-	for i := 0; i < position; i++ {
-		temp = temp.next
-	}
+func TestDeleteHead(t *testing.T) {
+	linkedList := NewEmptyLinkedList()
+	linkedList.InsertHead(10)
+	linkedList.InsertHead(20)
+	value, ok := linkedList.DeleteHead()
 
-	assert.Equal(t, expectedValue, temp.data)
+	assert.True(t, ok)
+	assert.Equal(t, 20, value)
+	assert.Equal(t, 1, linkedList.length)
+	assert.Equal(t, 10, linkedList.head.data)
+}
+
+func TestDeleteTail(t *testing.T) {
+	linkedList := NewEmptyLinkedList()
+	linkedList.InsertHead(10)
+	linkedList.InsertHead(20)
+	value, ok := linkedList.DeleteTail()
+
+	assert.True(t, ok)
+	assert.Equal(t, 10, value)
+	assert.Equal(t, 1, linkedList.length)
+	assert.Equal(t, 20, linkedList.head.data)
+}
+
+func TestDeleteAtPosition(t *testing.T) {
+	linkedList := NewEmptyLinkedList()
+	linkedList.InsertHead(10)
+	linkedList.InsertHead(20)
+	linkedList.InsertHead(30)
+	value, ok := linkedList.DeleteAtPosition(1)
+
+	assert.True(t, ok)
+	assert.Equal(t, 20, value)
+	assert.Equal(t, 2, linkedList.length)
+	assert.Equal(t, 30, linkedList.head.data)
+	assert.Equal(t, 10, linkedList.head.next.data)
+}
+
+func TestIsEmpty(t *testing.T) {
+	linkedList := NewEmptyLinkedList()
+	assert.True(t, linkedList.IsEmpty())
+
+	linkedList.InsertHead(10)
+	assert.False(t, linkedList.IsEmpty())
+}
+
+func TestIsValuePresent(t *testing.T) {
+	linkedList := NewEmptyLinkedList()
+	linkedList.InsertHead(10)
+	linkedList.InsertHead(20)
+
+	assert.True(t, linkedList.IsValuePresent(10))
+	assert.False(t, linkedList.IsValuePresent(30))
+}
+
+func TestSize(t *testing.T) {
+	linkedList := NewEmptyLinkedList()
+	assert.Equal(t, 0, linkedList.Size())
+
+	linkedList.InsertHead(10)
+	linkedList.InsertHead(20)
+	assert.Equal(t, 2, linkedList.Size())
 }
