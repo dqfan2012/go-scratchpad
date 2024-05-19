@@ -61,6 +61,7 @@ func TestDeleteHead(t *testing.T) {
 }
 
 func TestDeleteTail(t *testing.T) {
+	// Test deleting tail from a list with multiple nodes
 	linkedList := NewEmptySinglyLinkedList()
 	linkedList.InsertHead(10)
 	linkedList.InsertHead(20)
@@ -68,9 +69,20 @@ func TestDeleteTail(t *testing.T) {
 
 	assert.True(t, ok)
 	assert.Equal(t, 10, value)
-	assert.Equal(t, 1, linkedList.length)
+	assert.Equal(t, 1, linkedList.Size())
 	assert.Equal(t, 20, linkedList.head.data)
 	assert.Nil(t, linkedList.head.next) // Tail should be nil after deletion
+
+	// Test deleting tail from a list with only one node
+	linkedList = NewEmptySinglyLinkedList()
+	linkedList.InsertHead(10)
+	value, ok = linkedList.DeleteTail()
+
+	assert.True(t, ok)
+	assert.Equal(t, 10, value)
+	assert.Equal(t, 0, linkedList.Size())
+	assert.Nil(t, linkedList.head) // Head should be nil after deletion
+	assert.Nil(t, linkedList.tail) // Tail should be nil after deletion
 }
 
 func TestDeleteAtPosition(t *testing.T) {
@@ -83,7 +95,7 @@ func TestDeleteAtPosition(t *testing.T) {
 	value, ok, _ := linkedList.DeleteAtPosition(1)
 	assert.True(t, ok)
 	assert.Equal(t, 20, value)
-	assert.Equal(t, 2, linkedList.length)
+	assert.Equal(t, 2, linkedList.Size())
 	assert.Equal(t, 30, linkedList.head.data)
 	assert.Equal(t, 10, linkedList.head.next.data)
 
@@ -91,7 +103,7 @@ func TestDeleteAtPosition(t *testing.T) {
 	value, ok, _ = linkedList.DeleteAtPosition(0)
 	assert.True(t, ok)
 	assert.Equal(t, 30, value)
-	assert.Equal(t, 1, linkedList.length)
+	assert.Equal(t, 1, linkedList.Size())
 	assert.Equal(t, 10, linkedList.head.data)
 	assert.Nil(t, linkedList.head.next)
 
@@ -99,7 +111,15 @@ func TestDeleteAtPosition(t *testing.T) {
 	value, ok, _ = linkedList.DeleteAtPosition(0)
 	assert.True(t, ok)
 	assert.Equal(t, 10, value)
-	assert.Equal(t, 0, linkedList.length)
+	assert.Equal(t, 0, linkedList.Size())
+	assert.Nil(t, linkedList.head)
+
+	// Test deleting tail from a list with only one node
+	linkedList.InsertHead(40)
+	value, ok, _ = linkedList.DeleteAtPosition(0)
+	assert.True(t, ok)
+	assert.Equal(t, 40, value)
+	assert.Equal(t, 0, linkedList.Size())
 	assert.Nil(t, linkedList.head)
 }
 
