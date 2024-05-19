@@ -97,7 +97,6 @@ func (list *SinglyLinkedList) DeleteTail() (int, bool) {
 	if list.length == 1 {
 		value := list.head.data
 		list.ClearList()
-		list.length--
 
 		return value, true
 	}

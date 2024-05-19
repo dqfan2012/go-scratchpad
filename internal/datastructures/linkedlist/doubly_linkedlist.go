@@ -105,9 +105,7 @@ func (list *DoublyLinkedList) DeleteTail() (int, bool) {
 
 	if list.length == 1 {
 		value := list.head.data
-		list.head = nil
-		list.tail = nil
-		list.length--
+		list.ClearList()
 
 		return value, true
 	}
